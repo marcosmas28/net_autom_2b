@@ -1,0 +1,17 @@
+{
+    "pedido":[
+        {
+            "OrderID": 1,
+            "Address": "Mi Dirección Nro X, Ciudad",
+            "Status": "Recibido",
+            "Artículos": [
+                {
+                    "name": "Artículo X",
+                    "Quantity": 10,
+                    "Dangerous": false
+                }
+            ]
+        }
+    ]
+}
+

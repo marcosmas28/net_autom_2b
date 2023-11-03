@@ -1,0 +1,22 @@
+{
+    "edit-config":
+    [
+        {
+          "default-operation": "merge",
+          "test-operation": "set",
+          "some-integers": [2,3,5,7,9],
+          "a-boolean": true,
+          "more-numbers": [2.25E+2,-1.0735]
+        },
+        {
+          "default-operation": "commit",
+          "test-operation": "update",
+          "some-integers": [1,4,6,8,0],
+          "a-boolean": false,
+          "more-numbers": [2.24E+2,-1.0734]
+        }
+    ]
+}
+
+
+

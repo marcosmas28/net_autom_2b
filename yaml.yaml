@@ -1,0 +1,31 @@
+# ARCHIVO EJEMPLO YAML
+
+---
+edit-config:
+  - default-operation: merge
+    test-operation: set
+    some-integers:
+    - 2
+    - 3
+    - 5
+    - 7
+    - 9
+    a-boolean: true
+    more-numbers:
+    - 225.0
+
+  - default-operation: commit
+    test-operation: update
+    some-integers:
+    - 1
+    - 4
+    - 6
+    - 0
+    a-boolean: true
+    more-numbers:
+    - 224.0
+    - -1.0734
+...
+
+
+
