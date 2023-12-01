@@ -1,0 +1,45 @@
+[all:vars]
+ansible_connection=local
+
+[CPD-1:vars]
+username=admin
+password=MySuperSecretPassword
+backup_folder=/etc/ansible/00-backups-nexus/
+cisco_os=nxos
+
+[CPD-2:vars]
+username=admin
+password=MySuperSecretPassword
+backup_folder=/etc/ansible/00-backups-nexus/
+cisco_os=nxos
+
+[CPD-3:vars]
+username=admin
+password=MySuperSecretPassword
+backup_folder=/etc/ansible/00-backups-nexus/
+cisco_os=nxos
+
+[CPD-4:vars]
+username=admin
+password=MySuperSecretPassword
+backup_folder=/etc/ansible/00-backups-catalyst/
+cisco_os=ios
+
+[CPD-1]
+NX1-CPD1 host=10.30.30.76
+NX2-CPD1 host=10.30.30.75
+
+[CPD-2]
+URNX01 host=10.30.30.110
+URNX02 host=10.30.30.111
+URNX03 host=10.30.30.112
+URNX04 host=10.30.30.113
+
+[CPD-3]
+CPD3-N5K01 host=10.69.69.220
+CPD3-N5K02 host=10.69.69.221
+CPD3-N5K01 host=10.69.69.120
+CPD3-N5K02 host=10.69.69.121
+
+[CPD-4]
+CONTROL01 host=10.30.30.181

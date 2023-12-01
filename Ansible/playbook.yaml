@@ -1,0 +1,117 @@
+---
+
+- hosts: all
+  gather_facts: false
+  ignore_errors: true
+ 
+  tasks:
+    - name: Create root directory if don't exist
+      file:
+        path: "{{ backup_folder }}"
+        state: directory
+        mode: 0755
+   
+    - name: Create individual device folder if don't exist
+      file:
+        path: "{{ backup_folder }}{{ inventory_hostname }}"
+        state: directory
+        mode: 0755
+  
+    - name: Register timestamp variable
+      local_action: command date +%Y%m%d-%H:%M
+      register: timestamp
+
+    - name: Execute IOS commands
+      ios_command:
+        commands: "{{ item}}"
+      register: commands_output
+      with_items:
+        - show run
+        - show vlans
+        - show interfaces description
+        - show version
+        - show spanning-tree
+        - show spanning-tree blockedports
+      when:
+        - cisco_os == 'ios'
+   
+    - name: Create IOS command folder if don't exist
+      file:
+        path: "{{ backup_folder }}{{ inventory_hostname }}/{{ commands_output.results[item].item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+      when:
+        - cisco_os == 'ios'
+   
+    - name: Save IOS command output on destination file
+      copy:
+        content: "{{ commands_output.results[item].stdout[0] }}"
+        dest:  "{{ backup_folder }}{{ inventory_hostname }}/{{ commands_output.results[item].item }}/{{ inventory_hostname }}_{{ commands_output.results[item].item }}_{{ timestamp.stdout }}.txt"
+      with_items:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+      when:
+        - cisco_os == 'ios'
+
+    - name: Execute NXOS commands
+      nxos_command:
+        commands: "{{ item}}"
+      register: commands_output
+      with_items:
+        - show run
+        - show vlan
+        - show interface status
+        - show interface brief
+        - show port-channel summary
+        - show version
+        - show spanning-tree
+        - show spanning-tree blockedports
+        - show cdp neighbors
+      when:
+        - cisco_os == 'nxos'
+
+    - name: Create NXOS command folder if don't exist
+      file:
+        path: "{{ backup_folder }}{{ inventory_hostname }}/{{ commands_output.results[item].item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+      when:
+        - cisco_os == 'nxos'
+
+    - name: Save NXOS command output on destination file
+      copy:
+        content: "{{ commands_output.results[item].stdout[0] }}"
+        dest:  "{{ backup_folder }}{{ inventory_hostname }}/{{ commands_output.results[item].item }}/{{ inventory_hostname }}_{{ commands_output.results[item].item }}_{{ timestamp.stdout }}.txt"
+      with_items:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+      when:
+        - cisco_os == 'nxos'

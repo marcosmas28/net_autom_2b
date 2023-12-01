@@ -1,0 +1,21 @@
+datamodel:
+  backup_folder: ./all_backups/
+  ios:
+    commands:
+      - show run
+      - show vlans
+      - show interfaces description
+      - show version
+      # - show spanning-tree
+      # - show spanning-tree blockedports
+  nxos:
+    commands:
+      - show run
+      - show vlan
+      - show interface status
+      - show version
+      # - show interface brief
+      # - show port-channel summary
+      # - show spanning-tree
+      # - show spanning-tree blockedports
+      # - show cdp neighbors
