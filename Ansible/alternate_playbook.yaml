@@ -1,0 +1,55 @@
+---
+- name: PLAYBOOK FOR BACKUP AUTOMATION
+  hosts: all
+  gather_facts: false
+  ignore_errors: false
+#  serial: 1
+  vars_files: ./Data_Model/Data_Model.yaml
+  vars:
+    backup_folder: "{{datamodel.backup_folder}}"
+  tasks:
+    - name: Create root directory if don't exist
+      file:
+        path: "{{ backup_folder }}"
+        state: directory
+        mode: 0755
+      delegate_to: localhost
+      run_once: true
+   
+    - name: BLOCK IOS
+      block:
+        - name: Register timestamp variable
+          local_action: command date +%Y%m%d-%H:%M
+          register: timestamp
+
+        - name: Execute IOS commands
+          ios_command:
+            commands: "{{ item }}"
+          register: commands_output
+          loop: "{{datamodel.ios.commands}}"
+        
+        - name: Save IOS command output on destination file
+          copy:
+            content: "{{ item.stdout[0] }}"
+            dest:  "{{ backup_folder }}/{{ inventory_hostname }}_{{item.invocation.module_args.commands[0]}}_{{ timestamp.stdout }}.txt"
+          loop: "{{ commands_output.results }}"
+      when: cisco_os == 'ios'
+    
+    - name: BLOCK NXOS
+      block:
+        - name: Register timestamp variable
+          local_action: command date +%Y%m%d-%H:%M
+          register: timestamp
+
+        - name: Execute NXOS commands
+          ios_command:
+            commands: "{{ item }}"
+          register: commands_output
+          loop: "{{datamodel.nxos.commands}}"
+        
+        - name: Save NXOS command output on destination file
+          copy:
+            content: "{{ item.stdout[0] }}"
+            dest:  "{{ backup_folder }}/{{ inventory_hostname }}_{{item.invocation.module_args.commands[0]}}_{{ timestamp.stdout }}.txt"
+          loop: "{{ commands_output.results }}"
+      when: cisco_os == 'nxos'
